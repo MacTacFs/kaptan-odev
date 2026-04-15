@@ -5,51 +5,183 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Galaktik Macera Görev Listesi - Sürüm 3.0 (Çerçevesiz)</title>
 <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #03060d; color: #ffffff; margin: 0; padding: 0; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding-top: 5vh; overflow: hidden; overscroll-behavior: none; perspective: 1500px; }
-    .stars-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; background: radial-gradient(circle at center, #0b132b 0%, #03060d 100%); }
-    .stars-layer { position: absolute; width: 200vw; height: 200vh; top: -50vh; left: -50vw; background-image: radial-gradient(2px 2px at 10% 20%, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.8), rgba(0,0,0,0)), radial-gradient(2px 2px at 70% 80%, rgba(255,255,255,0.5), rgba(0,0,0,0)), radial-gradient(3px 3px at 40% 10%, #ffde59, rgba(0,0,0,0)), radial-gradient(2px 2px at 80% 30%, rgba(255,255,255,0.8), rgba(0,0,0,0)); background-size: 150px 150px; animation: slowSpin 120s linear infinite; opacity: 0.7; }
+    /* TEMEL AYARLAR VE MOBİL KORUMA */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #03060d; color: #ffffff; margin: 0; padding: 0; min-height: 100vh;
+        display: flex; justify-content: center; align-items: flex-start; /* Mobilde daha iyi yerleşim için yukarı hizaladık */
+        padding-top: 5vh;
+        overflow: hidden; overscroll-behavior: none; perspective: 1500px;
+    }
+    
+    /* AKICI ARKA PLAN (Sıfır Kasma) */
+    .stars-bg {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1;
+        background: radial-gradient(circle at center, #0b132b 0%, #03060d 100%);
+    }
+    .stars-layer {
+        position: absolute; width: 200vw; height: 200vh; top: -50vh; left: -50vw;
+        background-image: 
+            radial-gradient(2px 2px at 10% 20%, #ffffff, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 70% 80%, rgba(255,255,255,0.5), rgba(0,0,0,0)),
+            radial-gradient(3px 3px at 40% 10%, #ffde59, rgba(0,0,0,0)),
+            radial-gradient(2px 2px at 80% 30%, rgba(255,255,255,0.8), rgba(0,0,0,0));
+        background-size: 150px 150px;
+        animation: slowSpin 120s linear infinite;
+        opacity: 0.7;
+    }
     @keyframes slowSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .container { background: transparent; border: none; box-shadow: none; max-width: 950px; width: 95%; position: relative; z-index: 10; max-height: 90vh; overflow-y: auto; overflow-x: hidden; box-sizing: border-box; }
-    h1 { text-align: center; color: #5bc0be; font-size: 2.2em; text-shadow: 0 0 15px rgba(91,192,190,0.8), 2px 2px 5px #000; margin-bottom: 5px; letter-spacing: 2px; cursor: pointer; user-select: none; }
-    .captain { text-align: center; font-size: 1.1em; margin-bottom: 25px; color: #ffde59; display: flex; justify-content: center; align-items: center; gap: 10px; text-shadow: 2px 2px 5px #000; }
-    .avatar { font-size: 1.6em; cursor: pointer; transition: transform 0.2s; }
-    .captain-input { background: transparent; border: none; border-bottom: 2px dashed #5bc0be; color: #ffde59; font-size: 1.1em; font-family: inherit; text-align: center; width: 150px; outline: none; font-weight: bold; }
+
+    /* ÇERÇEVESİZ (FRAMELESS) ANA KONTEYNER */
+    .container {
+        /* Kutu, arka plan ve kenarlıklar tamamen şeffaf yapıldı */
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        max-width: 950px; width: 95%; position: relative; z-index: 10;
+        max-height: 90vh; overflow-y: auto; overflow-x: hidden; box-sizing: border-box;
+    }
+
+    /* BAŞLIK VE KAPTAN BÖLÜMÜ */
+    h1 {
+        text-align: center; color: #5bc0be; font-size: 2.2em; 
+        text-shadow: 0 0 15px rgba(91,192,190,0.8), 2px 2px 5px #000; /* Hologram efekti */
+        margin-bottom: 5px; letter-spacing: 2px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+    }
+    .captain { 
+        text-align: center; font-size: 1.1em; margin-bottom: 25px; color: #ffde59; 
+        display: flex; justify-content: center; align-items: center; gap: 10px; 
+        text-shadow: 2px 2px 5px #000;
+    }
+    .avatar { font-size: 1.6em; cursor: pointer; transition: transform 0.2s; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .avatar:active { transform: scale(0.8); }
+    .captain-input {
+        background: transparent; border: none; border-bottom: 2px dashed #5bc0be;
+        color: #ffde59; font-size: 1.1em; font-family: inherit; text-align: center;
+        width: 150px; outline: none; transition: border-bottom-color 0.3s; font-weight: bold;
+        text-shadow: 2px 2px 5px #000;
+    }
+    .captain-input:focus { border-bottom: 2px solid #ffde59; }
+    .captain-input::placeholder { color: rgba(91, 192, 190, 0.4); font-weight: normal; text-shadow: none; }
+
+    /* GÜN SEÇİCİ VE YAKIT */
     .day-selector { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
-    .day-btn { background-color: rgba(11, 19, 43, 0.6); border: 1px solid rgba(91, 192, 190, 0.4); color: #fff; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 0.9em; transition: all 0.3s; }
-    .active-day { background-color: rgba(91, 192, 190, 0.9); color: #03060d; font-weight: bold; box-shadow: 0 0 15px #5bc0be; }
-    .fuel-container { width: 100%; height: 12px; background-color: rgba(0,0,0,0.5); border-radius: 10px; margin-bottom: 25px; border: 1px solid rgba(91, 192, 190, 0.3); overflow: hidden; position: relative; }
-    .fuel-bar { height: 100%; width: 0%; background-color: #5bc0be; border-radius: 8px; transition: width 0.6s; box-shadow: 0 0 15px #5bc0be; }
-    .fuel-text { position: absolute; width: 100%; text-align: center; top: -2px; font-size: 0.75em; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; }
-    .table-responsive { width: 100%; overflow-x: auto; }
+    .day-btn {
+        background-color: rgba(11, 19, 43, 0.6); border: 1px solid rgba(91, 192, 190, 0.4); 
+        color: #fff; padding: 8px 12px; border-radius: 20px; /* Daha yuvarlak uzay kapsülü hissi */
+        cursor: pointer; font-family: inherit; font-size: 0.9em; transition: all 0.3s; 
+        touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+        backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+    .active-day { background-color: rgba(91, 192, 190, 0.9); color: #03060d; font-weight: bold; box-shadow: 0 0 15px #5bc0be; border-color: #5bc0be; }
+    
+    .fuel-container {
+        width: 100%; height: 12px; background-color: rgba(0,0,0,0.5); border-radius: 10px;
+        margin-bottom: 25px; border: 1px solid rgba(91, 192, 190, 0.3); overflow: hidden; position: relative;
+    }
+    .fuel-bar {
+        height: 100%; width: 0%; background-color: #5bc0be; border-radius: 8px;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.5s;
+        box-shadow: 0 0 15px #5bc0be;
+    }
+    .fuel-text {
+        position: absolute; width: 100%; text-align: center; top: -2px;
+        font-size: 0.75em; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000;
+    }
+
+    /* ÇERÇEVESİZ TABLO TASARIMI (Yıldızların önünde süzülen yazılar) */
+    .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; min-width: 400px; border-collapse: collapse; background-color: transparent; }
-    th, td { padding: 18px 10px; text-align: left; border-bottom: 1px dashed rgba(91, 192, 190, 0.2); font-size: 1.1em; vertical-align: middle; text-shadow: 0 0 8px #000; }
+    th, td { 
+        padding: 18px 10px; text-align: left; 
+        border-bottom: 1px dashed rgba(91, 192, 190, 0.2); /* Sadece aralarda ince kesik çizgiler */
+        font-size: 1.1em; vertical-align: middle; 
+        text-shadow: 0 0 8px #000, 0 0 15px rgba(0,0,0,0.8); /* Yazıları okunur kılan sihirli gölge */
+    }
     th { color: #5bc0be; font-weight: bold; text-transform: uppercase; font-size: 0.85em; letter-spacing: 1px; border-bottom: 2px solid rgba(91, 192, 190, 0.5); }
     .center-text { text-align: center; }
     tr:last-child td { border-bottom: none; }
+    
+    /* DUYGUSAL UZAYLI BÖLÜMÜ */
     .log-cell { display: flex; align-items: center; gap: 10px; }
-    .alien-icon { font-size: 1.8em; transition: transform 0.4s; }
-    .task-text { opacity: 0.5; font-style: italic; font-size: 0.9em; transition: opacity 0.4s, color 0.4s; }
+    .alien-icon { font-size: 1.8em; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-shadow: none; }
+    .task-text {
+        opacity: 0.5; font-style: italic; font-size: 0.9em;
+        transition: opacity 0.4s ease, text-shadow 0.4s ease, color 0.4s ease, transform 0.3s;
+    }
     .alien-awake { transform: scale(1.3) translateY(-2px); }
-    .text-revealed { opacity: 1; font-style: normal; font-weight: bold; color: #ffde59; text-shadow: 0 0 10px rgba(255,222,89,0.8); }
-    .single-star { font-size: 3em; color: rgba(255,255,255,0.15); cursor: pointer; transition: all 0.3s; user-select: none; display: inline-block; }
-    .star-lit { color: #ffde59; text-shadow: 0 0 25px #ffde59; pointer-events: none; }
-    #css-blackhole { position: fixed; top: 50%; left: 50%; width: 10px; height: 10px; background-color: #000; border-radius: 50%; transform: translate(-50%, -50%) scale(0); box-shadow: 0 0 40px 20px rgba(255,150,0,0.9), 0 0 80px 40px rgba(200,50,0,0.7); z-index: 9000; opacity: 0; pointer-events: none; transition: transform 3.5s, opacity 0.5s; }
+    .text-revealed {
+        opacity: 1; font-style: normal; font-weight: bold;
+        color: #ffde59; text-shadow: 0 0 10px rgba(255, 222, 89, 0.8), 2px 2px 4px #000;
+        transform: scale(1.05); display: inline-block;
+    }
+
+    /* DEV GÖREV YILDIZI */
+    .single-star { 
+        font-size: 3em; color: rgba(255,255,255,0.15); cursor: pointer; 
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        user-select: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; 
+        display: inline-block; text-shadow: none;
+    }
+    .single-star:active { transform: scale(0.8); }
+    .star-lit { color: #ffde59; text-shadow: 0 0 25px #ffde59, 0 0 45px #ffde59; transform: scale(1.1); pointer-events: none; }
+
+    /* %100 SAF CSS KARADELİK (Sıfır Kasma) */
+    #css-blackhole {
+        position: fixed; top: 50%; left: 50%;
+        width: 10px; height: 10px; background-color: #000; border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        box-shadow: 
+            0 0 40px 20px rgba(255, 150, 0, 0.9), 
+            0 0 80px 40px rgba(200, 50, 0, 0.7),
+            inset 0 0 15px #000;
+        z-index: 9000; opacity: 0; pointer-events: none;
+        transition: transform 3.5s cubic-bezier(0.55, 0.085, 0.68, 0.53), opacity 0.5s ease-in;
+        will-change: transform; /* Donanım Hızlandırma */
+    }
     .bh-active { opacity: 1 !important; transform: translate(-50%, -50%) scale(300) !important; }
-    .sucked-in { animation: spaghettify 3s forwards; }
-    @keyframes spaghettify { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0) rotate(720deg); filter: blur(20px); opacity: 0; } }
-    .congrats-message { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #ffde59; font-size: 2.8em; font-weight: bold; text-align: center; width: 100%; text-shadow: 0 0 20px #ffde59; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 1.5s; }
+
+    /* SPAGETTİLEŞME (Listeyi İçine Çekme) */
+    .sucked-in { animation: spaghettify 3s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards; transform-origin: center center; }
+    @keyframes spaghettify {
+        0% { transform: scale(1) rotate(0deg); opacity: 1; filter: blur(0px); }
+        40% { transform: scale(0.6) rotate(-15deg); filter: blur(2px); opacity: 0.9; }
+        100% { transform: scale(0) rotate(720deg); filter: blur(20px); opacity: 0; display: none; }
+    }
+
+    /* TEBRİK MESAJI */
+    .congrats-message {
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        color: #ffde59; font-size: 2.8em; font-weight: bold; text-align: center; width: 100%;
+        text-shadow: 0 0 20px #ffde59, 0 0 40px #ffde59, 3px 3px 10px #000; z-index: 9999;
+        opacity: 0; pointer-events: none; transition: opacity 1.5s ease-in; letter-spacing: 2px;
+    }
     .congrats-active { opacity: 1; }
-    #easter-ufo { position: fixed; top: 20%; left: -100px; font-size: 4em; z-index: 9999; pointer-events: none; transition: left 2s linear; }
-    ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(91,192,190,0.3); border-radius: 10px; }
+
+    /* EASTER EGG */
+    #easter-ufo { position: fixed; top: 20%; left: -100px; font-size: 4em; z-index: 9999; pointer-events: none; transition: left 2s linear, transform 2s; text-shadow: none; }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(91, 192, 190, 0.3); border-radius: 10px; }
 </style>
 </head>
 <body>
+
 <div class="stars-bg"><div class="stars-layer"></div></div>
 <div id="css-blackhole"></div>
 <div id="easter-ufo">🛸</div>
+
 <div class="container" id="main-container">
     <h1 id="main-title" onclick="triggerEasterEgg()">🚀 GALAKTİK MACERA 🌌</h1>
-    <div class="captain"><span class="avatar" id="avatar" onclick="changeAvatar()">👨‍🚀</span>Kaptan: <input type="text" class="captain-input" placeholder="Adını Buraya Yaz..." autocomplete="off"></div>
+    
+    <div class="captain">
+        <span class="avatar" id="avatar" onclick="changeAvatar()">👨‍🚀</span>
+        Kaptan: <input type="text" class="captain-input" placeholder="Adını Buraya Yaz..." autocomplete="off">
+    </div>
+
     <div class="day-selector" id="day-buttons">
         <button class="day-btn" id="btn-Pazartesi" onclick="loadDay('Pazartesi')">Pazartesi</button>
         <button class="day-btn" id="btn-Salı" onclick="loadDay('Salı')">Salı</button>
@@ -59,28 +191,221 @@
         <button class="day-btn" id="btn-Cumartesi" onclick="loadDay('Cumartesi')">Cumartesi</button>
         <button class="day-btn" id="btn-Pazar" onclick="loadDay('Pazar')">Pazar</button>
     </div>
-    <div class="fuel-container"><div class="fuel-bar" id="fuelBar"></div><div class="fuel-text" id="fuelText">%0 YAKIT BAŞLATILIYOR</div></div>
-    <div class="table-responsive"><table><thead><tr><th>Galaktik Hedef Modülü</th><th>Kaptan'ın Günlüğü</th><th class="center-text">Görev Onayı</th></tr></thead><tbody id="task-list"></tbody></table></div>
+
+    <div class="fuel-container">
+        <div class="fuel-bar" id="fuelBar"></div>
+        <div class="fuel-text" id="fuelText">%0 YAKIT BAŞLATILIYOR</div>
+    </div>
+
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Galaktik Hedef Modülü</th>
+                    <th>Kaptan'ın Günlüğü</th>
+                    <th class="center-text">Görev Onayı</th>
+                </tr>
+            </thead>
+            <tbody id="task-list"></tbody>
+        </table>
+    </div>
 </div>
+
 <div class="congrats-message" id="congrats">GÖREV TAMAMLANDI<br>KAPTAN! 🌌</div>
+
 <script>
-const AudioContext=window.AudioContext||window.webkitAudioContext;let audioCtx;
-function initAudio(){if(!audioCtx)audioCtx=new AudioContext();if(audioCtx.state==='suspended')audioCtx.resume();}
-function playBeep(f,t,d,v){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=t;o.frequency.setValueAtTime(f,audioCtx.currentTime);g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+d);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);}
-function playStarSound(){initAudio();playBeep(880,'sine',0.15,0.1);setTimeout(()=>playBeep(1200,'sine',0.3,0.1),100);}
-function playBlackHoleSound(){initAudio();playBeep(120,'sine',4.0,0.5);setTimeout(()=>playBeep(60,'triangle',4.0,0.4),100);}
-function playUfoSound(){initAudio();playBeep(400,'sine',1.5,0.1);setTimeout(()=>playBeep(600,'sine',1.0,0.1),200);}
-const avatars=["👨‍🚀","👩‍🚀","👽","🤖","👾","🚀","🛸"];let avatarIndex=0;
-function changeAvatar(){avatarIndex=(avatarIndex+1)%avatars.length;document.getElementById('avatar').innerText=avatars[avatarIndex];}
-let titleClickCount=0;
-function triggerEasterEgg(){titleClickCount++;if(titleClickCount===3){playUfoSound();const ufo=document.getElementById('easter-ufo');ufo.style.left=window.innerWidth+100+'px';setTimeout(()=>{ufo.style.transition="none";ufo.style.left="-100px";setTimeout(()=>{ufo.style.transition="left 2s linear";},50);},2500);titleClickCount=0;}setTimeout(()=>{titleClickCount=0;},2000);}
-const weeklySchedule={"Pazartesi":[{name:"OKUL",action:"Tamamlandı"},{name:"Satranç",action:"Tamamlandı"},{name:"Kitap Okuma",action:"15sf + 15sf"}],"Salı":[{name:"OKUL",action:"Tamamlandı"},{name:"Minecraft",action:"Tamamlandı"},{name:"ÖDEV",action:"Tamamlandı"},{name:"İngilizce Kitap",action:"Tamamlandı"}],"Çarşamba":[{name:"OKUL",action:"Tamamlandı"},{name:"ÖDEV",action:"Tamamlandı"},{name:"Kitap Okuma",action:"15sf + 15sf"}],"Perşembe":[{name:"OKUL",action:"Tamamlandı"},{name:"Eskrim",action:"Tamamlandı"},{name:"ÖDEV",action:"Tamamlandı"}],"Cuma":[{name:"OKUL",action:"Tamamlandı"},{name:"Eskrim",action:"Tamamlandı"},{name:"ÖDEV",action:"Tamamlandı"},{name:"Sinema Günü",action:"İzlendi"}],"Cumartesi":[{name:"Eskrim",action:"Tamamlandı"},{name:"ÖDEV",action:"Tamamlandı"},{name:"Kitap Okuma",action:"15sf + 15sf"}],"Pazar":[{name:"Serbest Zaman",action:"Dinlenildi"},{name:"İngilizce Kitap",action:"Tamamlandı"},{name:"Kitap Okuma",action:"15sf + 15sf"}]};
-let totalTasksForDay=0,completedTasks=0;
-function updateFuelBar(){let p=totalTasksForDay===0?0:(completedTasks/totalTasksForDay)*100;const fb=document.getElementById('fuelBar');fb.style.width=p+"%";if(p===0){document.getElementById('fuelText').innerText="GÖREVE HAZIRLAN";fb.style.backgroundColor="#5bc0be";}else if(p===100){document.getElementById('fuelText').innerText="HİPER SÜRÜCÜ AKTİF!";fb.style.backgroundColor="#ffde59";fb.style.boxShadow="0 0 20px #ffde59";}else{document.getElementById('fuelText').innerText="%"+Math.round(p)+" YAKIT YÜKLENDİ";fb.style.backgroundColor="#5bc0be";}}
-function loadDay(d){document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active-day'));document.getElementById('btn-'+d).classList.add('active-day');const tb=document.getElementById('task-list');tb.innerHTML='';const tasks=weeklySchedule[d];totalTasksForDay=tasks.length;completedTasks=0;updateFuelBar();document.getElementById('main-container').classList.remove('sucked-in');document.getElementById('css-blackhole').classList.remove('bh-active');document.getElementById('congrats').classList.remove('congrats-active');document.getElementById('task-list').style.pointerEvents='auto';document.getElementById('day-buttons').style.pointerEvents='auto';tasks.forEach(t=>{const tr=document.createElement('tr');tr.innerHTML='<td>'+t.name+'</td><td><div class="log-cell"><span class="alien-icon">👽💤</span><span class="task-text" data-action="'+t.action+'">Bekleniyor...</span></div></td><td class="center-text"><span class="single-star" onclick="completeTask(this)">★</span></td>';tb.appendChild(tr);});}
-window.onload=()=>{loadDay('Pazartesi');document.body.addEventListener('touchstart',initAudio,{once:true});document.body.addEventListener('click',initAudio,{once:true});};
-function completeTask(s){if(s.classList.contains('star-lit'))return;playStarSound();s.classList.add('star-lit');let row=s.closest('tr');let alien=row.querySelector('.alien-icon');alien.innerText='👽⚡';alien.classList.add('alien-awake');let ts=row.querySelector('.task-text');ts.innerText=ts.getAttribute('data-action');ts.classList.add('text-revealed');completedTasks++;updateFuelBar();if(completedTasks===totalTasksForDay){document.getElementById('task-list').style.pointerEvents='none';document.getElementById('day-buttons').style.pointerEvents='none';setTimeout(triggerBlackHole,800);}}
-function triggerBlackHole(){playBlackHoleSound();document.getElementById('css-blackhole').classList.add('bh-active');document.getElementById('main-container').classList.add('sucked-in');let cn=document.querySelector('.captain-input').value;let ai=document.getElementById('avatar').innerText;let fm="GÖREV TAMAMLANDI";if(cn.trim()!==""){fm+="<br>KAPTAN "+cn.trim().toUpperCase()+" "+ai;}else{fm+="<br>KAPTAN "+ai;}document.getElementById('congrats').innerHTML=fm;setTimeout(()=>{document.getElementById('congrats').classList.add('congrats-active');},3200);}
+    // --- 1. PÜRÜZSÜZ (Cızırtısız) SES MOTORU ---
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+
+    function initAudio() {
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playBeep(freq, type, duration, vol) {
+        if(!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playStarSound() {
+        initAudio();
+        // Tatlı ve pürüzsüz görev onay sesi
+        playBeep(880, 'sine', 0.15, 0.1); 
+        setTimeout(() => playBeep(1200, 'sine', 0.3, 0.1), 100); 
+    }
+
+    function playBlackHoleSound() {
+        initAudio();
+        // Cızırtı (square wave) iptal edildi. Yerine çok temiz ve derin baslar eklendi.
+        playBeep(120, 'sine', 4.0, 0.5);     // Pürüzsüz ana uğultu
+        setTimeout(() => playBeep(60, 'triangle', 4.0, 0.4), 100); // Çok derin titreşim
+    }
+
+    function playUfoSound() {
+        initAudio();
+        playBeep(400, 'sine', 1.5, 0.1);
+        setTimeout(() => playBeep(600, 'sine', 1.0, 0.1), 200);
+    }
+
+    // --- 2. AVATAR VE EASTER EGG ---
+    const avatars = ["👨‍🚀", "👩‍🚀", "👽", "🤖", "👾", "🚀", "🛸"];
+    let avatarIndex = 0;
+    function changeAvatar() {
+        avatarIndex = (avatarIndex + 1) % avatars.length;
+        document.getElementById('avatar').innerText = avatars[avatarIndex];
+    }
+
+    let titleClickCount = 0;
+    function triggerEasterEgg() {
+        titleClickCount++;
+        if(titleClickCount === 3) {
+            playUfoSound();
+            const ufo = document.getElementById('easter-ufo');
+            ufo.style.left = window.innerWidth + 100 + 'px';
+            ufo.style.transform = "rotate(20deg)";
+            setTimeout(() => { 
+                ufo.style.transition = "none"; ufo.style.left = "-100px"; ufo.style.transform = "rotate(0deg)"; 
+                setTimeout(()=> { ufo.style.transition = "left 2s linear, transform 2s"; }, 50);
+            }, 2500);
+            titleClickCount = 0;
+        }
+        setTimeout(() => { titleClickCount = 0; }, 2000); 
+    }
+
+    // --- 3. EXCEL VERİSİ ---
+    const weeklySchedule = {
+        "Pazartesi": [{ name: "OKUL", action: "Tamamlandı" }, { name: "Satranç", action: "Tamamlandı" }, { name: "Kitap Okuma", action: "15sf + 15sf" }],
+        "Salı": [{ name: "OKUL", action: "Tamamlandı" }, { name: "Minecraft", action: "Tamamlandı" }, { name: "ÖDEV", action: "Tamamlandı" }, { name: "İngilizce Kitap", action: "Tamamlandı" }],
+        "Çarşamba": [{ name: "OKUL", action: "Tamamlandı" }, { name: "ÖDEV", action: "Tamamlandı" }, { name: "Kitap Okuma", action: "15sf + 15sf" }],
+        "Perşembe": [{ name: "OKUL", action: "Tamamlandı" }, { name: "Eskrim", action: "Tamamlandı" }, { name: "ÖDEV", action: "Tamamlandı" }],
+        "Cuma": [{ name: "OKUL", action: "Tamamlandı" }, { name: "Eskrim", action: "Tamamlandı" }, { name: "ÖDEV", action: "Tamamlandı" }, { name: "Sinema Günü", action: "İzlendi" }],
+        "Cumartesi": [{ name: "Eskrim", action: "Tamamlandı" }, { name: "ÖDEV", action: "Tamamlandı" }, { name: "Kitap Okuma", action: "15sf + 15sf" }],
+        "Pazar": [{ name: "Serbest Zaman", action: "Dinlenildi" }, { name: "İngilizce Kitap", action: "Tamamlandı" }, { name: "Kitap Okuma", action: "15sf + 15sf" }]
+    };
+
+    let totalTasksForDay = 0;
+    let completedTasks = 0;
+
+    function updateFuelBar() {
+        let percentage = totalTasksForDay === 0 ? 0 : (completedTasks / totalTasksForDay) * 100;
+        const fuelBar = document.getElementById('fuelBar');
+        fuelBar.style.width = percentage + "%";
+        
+        if(percentage === 0) {
+            document.getElementById('fuelText').innerText = "GÖREVE HAZIRLAN";
+            fuelBar.style.backgroundColor = "#5bc0be";
+            fuelBar.style.boxShadow = "0 0 10px #5bc0be";
+        } else if(percentage === 100) {
+            document.getElementById('fuelText').innerText = "HİPER SÜRÜCÜ AKTİF!";
+            fuelBar.style.backgroundColor = "#ffde59";
+            fuelBar.style.boxShadow = "0 0 20px #ffde59";
+        } else {
+            document.getElementById('fuelText').innerText = "%" + Math.round(percentage) + " YAKIT YÜKLENDİ";
+            fuelBar.style.backgroundColor = "#5bc0be";
+            fuelBar.style.boxShadow = "0 0 10px #5bc0be";
+        }
+    }
+
+    function loadDay(dayName) {
+        document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active-day'));
+        document.getElementById('btn-' + dayName).classList.add('active-day');
+
+        const tbody = document.getElementById('task-list');
+        tbody.innerHTML = '';
+        
+        const tasks = weeklySchedule[dayName];
+        totalTasksForDay = tasks.length;
+        completedTasks = 0;
+        updateFuelBar();
+
+        // Sistemi normale döndür (eğer önceki günden karadelik açıldıysa)
+        document.getElementById('main-container').classList.remove('sucked-in');
+        document.getElementById('css-blackhole').classList.remove('bh-active');
+        document.getElementById('congrats').classList.remove('congrats-active');
+        document.getElementById('task-list').style.pointerEvents = 'auto'; 
+        document.getElementById('day-buttons').style.pointerEvents = 'auto'; 
+
+        tasks.forEach((taskObj) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${taskObj.name}</td>
+                <td>
+                    <div class="log-cell">
+                        <span class="alien-icon">👽💤</span>
+                        <span class="task-text" data-action="${taskObj.action}">Bekleniyor...</span>
+                    </div>
+                </td>
+                <td class="center-text"><span class="single-star" onclick="completeTask(this)">★</span></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    window.onload = () => { 
+        loadDay('Pazartesi'); 
+        document.body.addEventListener('touchstart', initAudio, { once: true });
+        document.body.addEventListener('click', initAudio, { once: true });
+    };
+
+    // --- 4. GÖREV TAMAMLAMA VE KARADELİK TETİKLEYİCİ ---
+    function completeTask(clickedStar) {
+        if (clickedStar.classList.contains('star-lit')) return; 
+
+        playStarSound(); 
+        
+        // Tek Yıldız Parlar
+        clickedStar.classList.add('star-lit'); 
+
+        // Uzaylıyı Uyandır ve Net Veriyi Yazdır
+        let row = clickedStar.closest('tr');
+        let alien = row.querySelector('.alien-icon');
+        alien.innerText = '👽⚡';
+        alien.classList.add('alien-awake');
+
+        let textSpan = row.querySelector('.task-text');
+        textSpan.innerText = textSpan.getAttribute('data-action'); 
+        textSpan.classList.add('text-revealed');
+
+        completedTasks++;
+        updateFuelBar();
+
+        if (completedTasks === totalTasksForDay) {
+            document.getElementById('task-list').style.pointerEvents = 'none'; 
+            document.getElementById('day-buttons').style.pointerEvents = 'none'; 
+            setTimeout(triggerBlackHole, 800); // Sesi ve parlamayı net görmek için hafif bekleme
+        }
+    }
+
+    function triggerBlackHole() {
+        playBlackHoleSound(); 
+        
+        // CSS Karadeliği Aktifleştir (Sıfır kasma, muazzam etki)
+        document.getElementById('css-blackhole').classList.add('bh-active');
+
+        // Çerçevesiz listeyi spagetti gibi bükerek uzayda kaybet
+        document.getElementById('main-container').classList.add('sucked-in');
+        
+        // Kaptan ismini al ve tebrik mesajını hazırla
+        let captainNameInput = document.querySelector('.captain-input').value;
+        let avatarIcon = document.getElementById('avatar').innerText;
+        let finalMessage = "GÖREV TAMAMLANDI";
+        if(captainNameInput.trim() !== "") { finalMessage += "<br>KAPTAN " + captainNameInput.trim().toUpperCase() + " " + avatarIcon; } 
+        else { finalMessage += "<br>KAPTAN " + avatarIcon; }
+        document.getElementById('congrats').innerHTML = finalMessage;
+
+        // Karadelik ekranı yuttuktan sonra mesajı göster
+        setTimeout(() => {
+            document.getElementById('congrats').classList.add('congrats-active');
+        }, 3200); 
+    }
 </script>
+
 </body>
 </html>
