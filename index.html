@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Galaktik Macera Görev Listesi - Sürüm 3.0 (Çerçevesiz)</title>
+<title>Galaktik Macera Görev Listesi - Sürüm 3.0</title>
 <style>
     /* TEMEL AYARLAR VE MOBİL KORUMA */
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #03060d; color: #ffffff; margin: 0; padding: 0; min-height: 100vh;
-        display: flex; justify-content: center; align-items: flex-start; /* Mobilde daha iyi yerleşim için yukarı hizaladık */
+        display: flex; justify-content: center; align-items: flex-start;
         padding-top: 5vh;
         overflow: hidden; overscroll-behavior: none; perspective: 1500px;
     }
@@ -18,6 +18,7 @@
     .stars-bg {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1;
         background: radial-gradient(circle at center, #0b132b 0%, #03060d 100%);
+        pointer-events: none;
     }
     .stars-layer {
         position: absolute; width: 200vw; height: 200vh; top: -50vh; left: -50vw;
@@ -33,12 +34,9 @@
     }
     @keyframes slowSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* ÇERÇEVESİZ (FRAMELESS) ANA KONTEYNER */
+    /* ÇERÇEVESİZ ANA KONTEYNER */
     .container {
-        /* Kutu, arka plan ve kenarlıklar tamamen şeffaf yapıldı */
-        background: transparent;
-        border: none;
-        box-shadow: none;
+        background: transparent; border: none; box-shadow: none;
         max-width: 950px; width: 95%; position: relative; z-index: 10;
         max-height: 90vh; overflow-y: auto; overflow-x: hidden; box-sizing: border-box;
     }
@@ -46,8 +44,8 @@
     /* BAŞLIK VE KAPTAN BÖLÜMÜ */
     h1 {
         text-align: center; color: #5bc0be; font-size: 2.2em; 
-        text-shadow: 0 0 15px rgba(91,192,190,0.8), 2px 2px 5px #000; /* Hologram efekti */
-        margin-bottom: 5px; letter-spacing: 2px; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+        text-shadow: 0 0 15px rgba(91,192,190,0.8), 2px 2px 5px #000;
+        margin-bottom: 5px; letter-spacing: 2px; user-select: none; -webkit-tap-highlight-color: transparent;
     }
     .captain { 
         text-align: center; font-size: 1.1em; margin-bottom: 25px; color: #ffde59; 
@@ -69,7 +67,7 @@
     .day-selector { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
     .day-btn {
         background-color: rgba(11, 19, 43, 0.6); border: 1px solid rgba(91, 192, 190, 0.4); 
-        color: #fff; padding: 8px 12px; border-radius: 20px; /* Daha yuvarlak uzay kapsülü hissi */
+        color: #fff; padding: 8px 12px; border-radius: 20px; 
         cursor: pointer; font-family: inherit; font-size: 0.9em; transition: all 0.3s; 
         touch-action: manipulation; -webkit-tap-highlight-color: transparent;
         backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
@@ -87,17 +85,17 @@
     }
     .fuel-text {
         position: absolute; width: 100%; text-align: center; top: -2px;
-        font-size: 0.75em; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000;
+        font-size: 0.75em; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; pointer-events: none;
     }
 
-    /* ÇERÇEVESİZ TABLO TASARIMI (Yıldızların önünde süzülen yazılar) */
+    /* ÇERÇEVESİZ TABLO TASARIMI */
     .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; min-width: 400px; border-collapse: collapse; background-color: transparent; }
     th, td { 
         padding: 18px 10px; text-align: left; 
-        border-bottom: 1px dashed rgba(91, 192, 190, 0.2); /* Sadece aralarda ince kesik çizgiler */
+        border-bottom: 1px dashed rgba(91, 192, 190, 0.2); 
         font-size: 1.1em; vertical-align: middle; 
-        text-shadow: 0 0 8px #000, 0 0 15px rgba(0,0,0,0.8); /* Yazıları okunur kılan sihirli gölge */
+        text-shadow: 0 0 8px #000, 0 0 15px rgba(0,0,0,0.8); 
     }
     th { color: #5bc0be; font-weight: bold; text-transform: uppercase; font-size: 0.85em; letter-spacing: 1px; border-bottom: 2px solid rgba(91, 192, 190, 0.5); }
     .center-text { text-align: center; }
@@ -127,7 +125,7 @@
     .single-star:active { transform: scale(0.8); }
     .star-lit { color: #ffde59; text-shadow: 0 0 25px #ffde59, 0 0 45px #ffde59; transform: scale(1.1); pointer-events: none; }
 
-    /* %100 SAF CSS KARADELİK (Sıfır Kasma) */
+    /* %100 SAF CSS KARADELİK */
     #css-blackhole {
         position: fixed; top: 50%; left: 50%;
         width: 10px; height: 10px; background-color: #000; border-radius: 50%;
@@ -138,7 +136,7 @@
             inset 0 0 15px #000;
         z-index: 9000; opacity: 0; pointer-events: none;
         transition: transform 3.5s cubic-bezier(0.55, 0.085, 0.68, 0.53), opacity 0.5s ease-in;
-        will-change: transform; /* Donanım Hızlandırma */
+        will-change: transform;
     }
     .bh-active { opacity: 1 !important; transform: translate(-50%, -50%) scale(300) !important; }
 
@@ -159,8 +157,11 @@
     }
     .congrats-active { opacity: 1; }
 
-    /* EASTER EGG */
-    #easter-ufo { position: fixed; top: 20%; left: -100px; font-size: 4em; z-index: 9999; pointer-events: none; transition: left 2s linear, transform 2s; text-shadow: none; }
+    /* DİNAMİK EASTER EGG (UFO) */
+    #easter-ufo { 
+        position: fixed; font-size: 4em; z-index: 9999; pointer-events: none; text-shadow: none; 
+        top: -200px; left: -200px; /* Başlangıçta ekran dışı */
+    }
 
     /* SCROLLBAR */
     ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -175,10 +176,10 @@
 <div id="easter-ufo">🛸</div>
 
 <div class="container" id="main-container">
-    <h1 id="main-title" onclick="triggerEasterEgg()">🚀 GALAKTİK MACERA 🌌</h1>
+    <h1>🚀 GALAKTİK MACERA 🌌</h1>
     
     <div class="captain">
-        <span class="avatar" id="avatar" onclick="changeAvatar()">👨‍🚀</span>
+        <span class="avatar" id="avatar" onclick="changeAvatar(event)">👨‍🚀</span>
         Kaptan: <input type="text" class="captain-input" placeholder="Adını Buraya Yaz..." autocomplete="off">
     </div>
 
@@ -214,7 +215,7 @@
 <div class="congrats-message" id="congrats">GÖREV TAMAMLANDI<br>KAPTAN! 🌌</div>
 
 <script>
-    // --- 1. PÜRÜZSÜZ (Cızırtısız) SES MOTORU ---
+    // --- 1. PÜRÜZSÜZ SES MOTORU ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx;
 
@@ -236,16 +237,14 @@
 
     function playStarSound() {
         initAudio();
-        // Tatlı ve pürüzsüz görev onay sesi
         playBeep(880, 'sine', 0.15, 0.1); 
         setTimeout(() => playBeep(1200, 'sine', 0.3, 0.1), 100); 
     }
 
     function playBlackHoleSound() {
         initAudio();
-        // Cızırtı (square wave) iptal edildi. Yerine çok temiz ve derin baslar eklendi.
-        playBeep(120, 'sine', 4.0, 0.5);     // Pürüzsüz ana uğultu
-        setTimeout(() => playBeep(60, 'triangle', 4.0, 0.4), 100); // Çok derin titreşim
+        playBeep(120, 'sine', 4.0, 0.5);     
+        setTimeout(() => playBeep(60, 'triangle', 4.0, 0.4), 100); 
     }
 
     function playUfoSound() {
@@ -254,29 +253,68 @@
         setTimeout(() => playBeep(600, 'sine', 1.0, 0.1), 200);
     }
 
-    // --- 2. AVATAR VE EASTER EGG ---
+    // --- 2. AVATAR VE DİNAMİK EASTER EGG (UFO) ---
     const avatars = ["👨‍🚀", "👩‍🚀", "👽", "🤖", "👾", "🚀", "🛸"];
     let avatarIndex = 0;
-    function changeAvatar() {
+    function changeAvatar(e) {
+        e.stopPropagation(); // Avatar değişimi UFO tıklamasını tetiklemesin
         avatarIndex = (avatarIndex + 1) % avatars.length;
         document.getElementById('avatar').innerText = avatars[avatarIndex];
     }
 
-    let titleClickCount = 0;
-    function triggerEasterEgg() {
-        titleClickCount++;
-        if(titleClickCount === 3) {
-            playUfoSound();
-            const ufo = document.getElementById('easter-ufo');
-            ufo.style.left = window.innerWidth + 100 + 'px';
-            ufo.style.transform = "rotate(20deg)";
-            setTimeout(() => { 
-                ufo.style.transition = "none"; ufo.style.left = "-100px"; ufo.style.transform = "rotate(0deg)"; 
-                setTimeout(()=> { ufo.style.transition = "left 2s linear, transform 2s"; }, 50);
-            }, 2500);
-            titleClickCount = 0;
+    let clickCount = 0;
+    let clickTimer;
+    
+    // Ekranın herhangi bir yerine tıklanmayı dinler
+    document.addEventListener('click', (e) => {
+        // Yıldızlara, butonlara veya input'a tıklanırsa UFO'yu sayma (işlemleri bozmamak için)
+        if(e.target.closest('button') || e.target.closest('.single-star') || e.target.closest('input')) return;
+
+        clickCount++;
+        clearTimeout(clickTimer);
+        
+        if(clickCount === 3) {
+            triggerDynamicUfo();
+            clickCount = 0;
+        } else {
+            clickTimer = setTimeout(() => { clickCount = 0; }, 1500); // 1.5 sn içinde 3 tık yapılmazsa sıfırla
         }
-        setTimeout(() => { titleClickCount = 0; }, 2000); 
+    });
+
+    function triggerDynamicUfo() {
+        playUfoSound();
+        const ufo = document.getElementById('easter-ufo');
+        
+        // Ekranın genişliği ve yüksekliği
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        
+        // UFO'nun rastgele başlayacağı tarafı seç (Sol veya Sağ)
+        const startFromLeft = Math.random() > 0.5;
+        
+        // Başlangıç ve Bitiş koordinatları hesaplaması
+        const startX = startFromLeft ? -150 : w + 150;
+        const endX = startFromLeft ? w + 150 : -150;
+        
+        const startY = Math.random() * h;
+        const endY = Math.random() * h;
+        
+        // UFO'nun burnunu varış noktasına çevirmek için açı hesaplaması
+        let angle = Math.atan2(endY - startY, endX - startX) * (180 / Math.PI);
+        
+        // Animasyonu sıfırla ve UFO'yu başlangıç noktasına ışınla
+        ufo.style.transition = 'none';
+        ufo.style.left = startX + 'px';
+        ufo.style.top = startY + 'px';
+        ufo.style.transform = `rotate(${angle}deg)`;
+        
+        // Tarayıcıyı zorla yenile ki başlangıç konumu algılansın
+        void ufo.offsetWidth;
+        
+        // Hareketi başlat
+        ufo.style.transition = 'left 2.5s linear, top 2.5s linear';
+        ufo.style.left = endX + 'px';
+        ufo.style.top = endY + 'px';
     }
 
     // --- 3. EXCEL VERİSİ ---
@@ -301,15 +339,15 @@
         if(percentage === 0) {
             document.getElementById('fuelText').innerText = "GÖREVE HAZIRLAN";
             fuelBar.style.backgroundColor = "#5bc0be";
-            fuelBar.style.boxShadow = "0 0 10px #5bc0be";
+            fuelBar.style.boxShadow = "0 0 15px #5bc0be";
         } else if(percentage === 100) {
             document.getElementById('fuelText').innerText = "HİPER SÜRÜCÜ AKTİF!";
             fuelBar.style.backgroundColor = "#ffde59";
-            fuelBar.style.boxShadow = "0 0 20px #ffde59";
+            fuelBar.style.boxShadow = "0 0 25px #ffde59";
         } else {
             document.getElementById('fuelText').innerText = "%" + Math.round(percentage) + " YAKIT YÜKLENDİ";
             fuelBar.style.backgroundColor = "#5bc0be";
-            fuelBar.style.boxShadow = "0 0 10px #5bc0be";
+            fuelBar.style.boxShadow = "0 0 15px #5bc0be";
         }
     }
 
@@ -325,7 +363,6 @@
         completedTasks = 0;
         updateFuelBar();
 
-        // Sistemi normale döndür (eğer önceki günden karadelik açıldıysa)
         document.getElementById('main-container').classList.remove('sucked-in');
         document.getElementById('css-blackhole').classList.remove('bh-active');
         document.getElementById('congrats').classList.remove('congrats-active');
@@ -360,10 +397,8 @@
 
         playStarSound(); 
         
-        // Tek Yıldız Parlar
         clickedStar.classList.add('star-lit'); 
 
-        // Uzaylıyı Uyandır ve Net Veriyi Yazdır
         let row = clickedStar.closest('tr');
         let alien = row.querySelector('.alien-icon');
         alien.innerText = '👽⚡';
@@ -379,20 +414,16 @@
         if (completedTasks === totalTasksForDay) {
             document.getElementById('task-list').style.pointerEvents = 'none'; 
             document.getElementById('day-buttons').style.pointerEvents = 'none'; 
-            setTimeout(triggerBlackHole, 800); // Sesi ve parlamayı net görmek için hafif bekleme
+            setTimeout(triggerBlackHole, 800); 
         }
     }
 
     function triggerBlackHole() {
         playBlackHoleSound(); 
         
-        // CSS Karadeliği Aktifleştir (Sıfır kasma, muazzam etki)
         document.getElementById('css-blackhole').classList.add('bh-active');
-
-        // Çerçevesiz listeyi spagetti gibi bükerek uzayda kaybet
         document.getElementById('main-container').classList.add('sucked-in');
         
-        // Kaptan ismini al ve tebrik mesajını hazırla
         let captainNameInput = document.querySelector('.captain-input').value;
         let avatarIcon = document.getElementById('avatar').innerText;
         let finalMessage = "GÖREV TAMAMLANDI";
@@ -400,7 +431,6 @@
         else { finalMessage += "<br>KAPTAN " + avatarIcon; }
         document.getElementById('congrats').innerHTML = finalMessage;
 
-        // Karadelik ekranı yuttuktan sonra mesajı göster
         setTimeout(() => {
             document.getElementById('congrats').classList.add('congrats-active');
         }, 3200); 
