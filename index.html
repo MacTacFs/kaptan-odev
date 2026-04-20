@@ -3,103 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Galaktik Macera Görev Listesi - Sürüm 4.1</title>
+<title>Galaktik Macera - Sürüm 5.0 (RPG & HD Warp)</title>
 <style>
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #03060d; color: #ffffff; margin: 0; padding: 0; min-height: 100vh;
-        display: flex; justify-content: center; align-items: flex-start;
-        padding-top: 5vh; overflow: hidden; overscroll-behavior: none; perspective: 1500px;
+        background-color: #03060d; color: #ffffff; margin: 0; padding: 10px; min-height: 100vh;
+        display: flex; justify-content: center; align-items: center; 
+        overflow: hidden; overscroll-behavior: none; perspective: 1500px; box-sizing: border-box;
     }
     
-    /* AKICI ARKA PLAN */
-    .stars-bg {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1;
-        background: radial-gradient(circle at center, #0b132b 0%, #03060d 100%);
-        pointer-events: none;
-    }
-    .stars-layer {
-        position: absolute; width: 200vw; height: 200vh; top: -50vh; left: -50vw;
-        background-image: 
-            radial-gradient(2px 2px at 10% 20%, #ffffff, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-            radial-gradient(3px 3px at 40% 10%, #ffde59, rgba(0,0,0,0)),
-            radial-gradient(2px 2px at 80% 30%, rgba(255,255,255,0.8), rgba(0,0,0,0));
-        background-size: 150px 150px; animation: slowSpin 120s linear infinite; opacity: 0.7;
-    }
-    @keyframes slowSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-    /* STAR WARS HYPERSPACE (IŞINLANMA) EFEKTİ */
-    .warp-speed .stars-layer { 
-        animation: hyperDrive 1.2s infinite ease-in !important; 
-        filter: blur(1px); 
-    }
-    @keyframes hyperDrive { 
-        0% { transform: scale(1); opacity: 0; } 
-        50% { opacity: 1; }
-        100% { transform: scale(15); opacity: 0; } 
+    /* YENİ NESİL HD CANVAS ARKA PLAN */
+    #starCanvas {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none;
     }
 
     /* ASTEROİT KONTEYNERİ */
-    #asteroid-field { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5; pointer-events: none; overflow: hidden; }
+    #asteroid-field { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 5; pointer-events: none; overflow: hidden; }
     .meteor { position: absolute; font-size: 3em; animation: streak linear infinite; text-shadow: 0 0 20px #ff5000; }
-    @keyframes streak { 0% { transform: translate(100vw, -20vh) rotate(-45deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translate(-20vw, 120vh) rotate(-45deg); opacity: 0; } }
+    @keyframes streak { 0% { transform: translate(100vw, -20vh) rotate(-45deg) scale(0.5); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translate(-20vw, 120vh) rotate(-45deg) scale(2); opacity: 0; } }
 
-    /* ÇERÇEVESİZ ANA KONTEYNER */
+    /* ANA KONTEYNER */
     .container {
         background: transparent; border: none; box-shadow: none;
-        max-width: 950px; width: 95%; position: relative; z-index: 10;
-        max-height: 90vh; overflow-y: auto; overflow-x: hidden; box-sizing: border-box;
+        max-width: 950px; width: 100%; position: relative; z-index: 10;
+        max-height: 95vh; overflow-y: auto; overflow-x: hidden; box-sizing: border-box;
         transition: all 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .hide-container { opacity: 0; transform: scale(0.5) translateY(-500px); pointer-events: none; }
+    .hide-container { opacity: 0; transform: scale(0.5) translateY(-100vh); pointer-events: none; }
 
-    /* BAŞLIK VE RÜTBE BÖLÜMÜ */
-    h1 {
-        text-align: center; color: #5bc0be; font-size: 2.2em; 
-        text-shadow: 0 0 15px rgba(91,192,190,0.8), 2px 2px 5px #000;
-        margin-bottom: 5px; letter-spacing: 2px; user-select: none;
-    }
-    .rank-display {
-        text-align: center; font-size: 1.2em; color: #ffde59; margin-bottom: 15px;
-        text-shadow: 0 0 10px #ffde59, 2px 2px 4px #000; font-weight: bold;
-    }
-    .captain { 
-        text-align: center; font-size: 1.1em; margin-bottom: 25px; color: #fff; 
-        display: flex; justify-content: center; align-items: center; gap: 10px; 
-        text-shadow: 2px 2px 5px #000;
-    }
-    .avatar { font-size: 1.6em; cursor: pointer; transition: transform 0.2s; user-select: none; }
+    /* BAŞLIK, RÜTBE VE SERİ BÖLÜMÜ */
+    h1 { text-align: center; color: #5bc0be; font-size: 2.2em; text-shadow: 0 0 15px rgba(91,192,190,0.8), 2px 2px 5px #000; margin-bottom: 5px; letter-spacing: 2px; user-select: none; }
+    .rank-display { text-align: center; font-size: 1.2em; color: #ffde59; margin-bottom: 5px; text-shadow: 0 0 10px #ffde59, 2px 2px 4px #000; font-weight: bold; }
+    .streak-display { text-align: center; font-size: 1em; color: #ff5000; margin-bottom: 15px; text-shadow: 0 0 10px #ff5000, 2px 2px 4px #000; font-weight: bold; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.8; } }
+
+    .captain { text-align: center; font-size: 1.1em; margin-bottom: 25px; color: #fff; display: flex; justify-content: center; align-items: center; gap: 10px; text-shadow: 2px 2px 5px #000; flex-wrap: wrap; }
+    .avatar { font-size: 1.6em; cursor: pointer; transition: transform 0.2s; user-select: none; position: relative; }
     .avatar:active { transform: scale(0.8); }
-    .captain-input {
-        background: transparent; border: none; border-bottom: 2px dashed #5bc0be;
-        color: #fff; font-size: 1.1em; font-family: inherit; text-align: center;
-        width: 150px; outline: none; font-weight: bold; text-shadow: 2px 2px 5px #000;
-    }
+    .captain-input { background: transparent; border: none; border-bottom: 2px dashed #5bc0be; color: #fff; font-size: 1.1em; font-family: inherit; text-align: center; width: 150px; outline: none; font-weight: bold; text-shadow: 2px 2px 5px #000; }
+    .avatar-hint { font-size: 0.5em; color: #ccc; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-weight: normal; }
 
-    /* GÜN SEÇİCİ VE YAKIT */
+    /* GÜNLER VE YAKIT */
     .day-selector { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
-    .day-btn {
-        background-color: rgba(11, 19, 43, 0.6); border: 1px solid rgba(91, 192, 190, 0.4); 
-        color: #fff; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 0.9em; transition: all 0.3s; 
-    }
+    .day-btn { background-color: rgba(11, 19, 43, 0.6); border: 1px solid rgba(91, 192, 190, 0.4); color: #fff; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 0.9em; transition: all 0.3s; }
     .active-day { background-color: rgba(91, 192, 190, 0.9); color: #03060d; font-weight: bold; box-shadow: 0 0 15px #5bc0be; }
     
     .fuel-container { width: 100%; height: 12px; background-color: rgba(0,0,0,0.5); border-radius: 10px; margin-bottom: 25px; border: 1px solid rgba(91, 192, 190, 0.3); overflow: hidden; position: relative; }
     .fuel-bar { height: 100%; width: 0%; background-color: #5bc0be; border-radius: 8px; transition: width 0.6s ease, background-color 0.5s; }
     .fuel-text { position: absolute; width: 100%; text-align: center; top: -2px; font-size: 0.75em; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; pointer-events: none;}
 
-    /* TABLO VE DEĞİŞTİRİLEBİLİR GÖREVLER */
+    /* TABLO */
     .table-responsive { width: 100%; overflow-x: auto; padding-right: 5px; }
     table { width: 100%; min-width: 400px; border-collapse: collapse; background-color: transparent; }
     th, td { padding: 18px 10px; text-align: left; border-bottom: 1px dashed rgba(91, 192, 190, 0.2); font-size: 1.1em; vertical-align: middle; text-shadow: 0 0 8px #000, 0 0 15px rgba(0,0,0,0.8); }
     th { color: #5bc0be; font-weight: bold; text-transform: uppercase; font-size: 0.85em; border-bottom: 2px solid rgba(91, 192, 190, 0.5); }
     .center-text { text-align: center; }
     
-    .editable-task {
-        background: rgba(255,255,255,0.05); border: 1px dashed transparent; border-radius: 5px; padding: 5px;
-        transition: border 0.3s, background 0.3s; outline: none; display: inline-block; min-width: 120px;
-    }
+    .editable-task { background: rgba(255,255,255,0.05); border: 1px dashed transparent; border-radius: 5px; padding: 5px; transition: border 0.3s, background 0.3s; outline: none; display: inline-block; min-width: 120px; }
     .editable-task:hover, .editable-task:focus { border: 1px dashed #5bc0be; background: rgba(91, 192, 190, 0.1); cursor: text; }
 
     /* UZAYLI VE YILDIZ */
@@ -111,51 +71,68 @@
 
     .single-star { font-size: 3em; color: rgba(255,255,255,0.15); cursor: pointer; transition: all 0.3s; display: inline-block; user-select: none; }
     .single-star:active { transform: scale(0.8); }
-    /* pointer-events: none silindi ki geri tıklanabilsin */
     .star-lit { color: #ffde59; text-shadow: 0 0 25px #ffde59, 0 0 45px #ffde59; transform: scale(1.1); }
 
-    /* TEBRİK MESAJI (Tıklanabilir) */
-    .congrats-message {
-        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        color: #ffde59; font-size: 2.8em; font-weight: bold; text-align: center; width: 100%;
-        text-shadow: 0 0 20px #ffde59, 0 0 40px #ffde59, 3px 3px 10px #000; z-index: 9999;
-        opacity: 0; pointer-events: none; transition: opacity 1s ease-in; cursor: pointer;
-    }
+    /* TEBRİK & SIFIRLAMA EKRANI */
+    .congrats-message { position: fixed; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #ffde59; font-size: 2.8em; font-weight: bold; text-align: center; text-shadow: 0 0 20px #ffde59, 0 0 40px #ffde59, 3px 3px 10px #000; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 1s ease-in; box-sizing: border-box; padding: 20px; }
     .congrats-active { opacity: 1; pointer-events: auto; }
+    
+    .jump-btn { background: linear-gradient(45deg, #ff5000, #ffde59); border: none; padding: 15px 30px; color: #000; font-size: 0.4em; font-weight: bold; border-radius: 50px; cursor: pointer; margin-top: 30px; box-shadow: 0 0 30px #ff5000; transition: transform 0.2s; pointer-events: auto; }
+    .jump-btn:active { transform: scale(0.9); }
 
-    /* DİNAMİK EASTER EGG NESNESİ */
-    #easter-ufo { position: fixed; font-size: 4em; z-index: 9999; pointer-events: none; top: -200px; left: -200px; }
-    #ufo-emoji { display: inline-block; animation: wobble 0.6s ease-in-out infinite alternate; }
+    /* LOOTBOX (SANDIK) EKRANI */
+    #lootbox-screen { position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.8); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.5s; backdrop-filter: blur(10px); }
+    .lootbox-active { opacity: 1 !important; pointer-events: auto !important; }
+    .chest { font-size: 7em; cursor: pointer; animation: shake 0.5s infinite; filter: drop-shadow(0 0 20px #ffde59); transition: transform 0.2s; }
+    .chest:active { transform: scale(0.8); }
+    @keyframes shake { 0% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } 100% { transform: rotate(-5deg); } }
+    .chest-text { color: #fff; font-size: 2em; margin-top: 20px; text-shadow: 0 0 10px #fff; font-weight: bold; }
+
+    /* FLAŞ EFEKTİ (Sıfırlama için) */
+    #flash-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: white; z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 1.5s ease-out; }
+
+    /* ÇOKLU DİNAMİK NESNELER */
+    .space-object { position: fixed; font-size: 4em; z-index: 9999; pointer-events: none; text-shadow: none; }
+    .ufo-emoji { display: inline-block; animation: wobble 0.6s ease-in-out infinite alternate; }
     @keyframes wobble { 0% { transform: translateY(-10px) rotate(-5deg); } 100% { transform: translateY(10px) rotate(5deg); } }
 
-    @media (max-width: 500px) { .single-star { font-size: 2.4em; } h1 { font-size: 1.8em; } }
+    @media (max-width: 500px) { .single-star { font-size: 2.4em; } h1 { font-size: 1.8em; } .congrats-message { font-size: 1.8em; } }
     ::-webkit-scrollbar { width: 4px; height: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(91, 192, 190, 0.3); border-radius: 10px; }
 </style>
 </head>
 <body>
 
-<div class="stars-bg" id="bg-stars"><div class="stars-layer"></div></div>
+<canvas id="starCanvas"></canvas>
 <div id="asteroid-field"></div>
-<div id="easter-ufo"><div id="ufo-emoji">🛸</div></div>
+<div id="flash-overlay"></div>
+
+<div id="lootbox-screen">
+    <div class="chest" onclick="openLoot()">🎁</div>
+    <div class="chest-text">Hafta Sonu Sandığı! Tıkla!</div>
+</div>
 
 <div class="container" id="main-container">
     <h1>🚀 GALAKTİK MACERA 🌌</h1>
     
     <div class="rank-display" id="rank-badge">🥉 Çaylak Yolcu (0 XP)</div>
+    <div class="streak-display" id="streak-badge"></div>
 
     <div class="captain">
-        <span class="avatar" id="avatar" onclick="changeAvatar(event)">👨‍🚀</span>
+        <div style="position: relative;">
+            <span class="avatar" id="avatar" onclick="changeAvatar(event)">👨‍🚀</span>
+            <div class="avatar-hint" id="avatar-hint">Yeni Kilit Aç!</div>
+        </div>
         Kaptan: <input type="text" id="captain-name" class="captain-input" placeholder="Adını Yaz..." autocomplete="off" onchange="saveData()">
     </div>
 
     <div class="day-selector" id="day-buttons">
-        <button class="day-btn" id="btn-Pazartesi" onclick="loadDay('Pazartesi')">Pazartesi</button>
-        <button class="day-btn" id="btn-Salı" onclick="loadDay('Salı')">Salı</button>
-        <button class="day-btn" id="btn-Çarşamba" onclick="loadDay('Çarşamba')">Çarşamba</button>
-        <button class="day-btn" id="btn-Perşembe" onclick="loadDay('Perşembe')">Perşembe</button>
-        <button class="day-btn" id="btn-Cuma" onclick="loadDay('Cuma')">Cuma</button>
-        <button class="day-btn" id="btn-Cumartesi" onclick="loadDay('Cumartesi')">Cumartesi</button>
-        <button class="day-btn" id="btn-Pazar" onclick="loadDay('Pazar')">Pazar</button>
+        <button class="day-btn" id="btn-Pazartesi" onclick="loadDay('Pazartesi')">Pzt</button>
+        <button class="day-btn" id="btn-Salı" onclick="loadDay('Salı')">Sal</button>
+        <button class="day-btn" id="btn-Çarşamba" onclick="loadDay('Çarşamba')">Çar</button>
+        <button class="day-btn" id="btn-Perşembe" onclick="loadDay('Perşembe')">Per</button>
+        <button class="day-btn" id="btn-Cuma" onclick="loadDay('Cuma')">Cum</button>
+        <button class="day-btn" id="btn-Cumartesi" onclick="loadDay('Cumartesi')">Cmt</button>
+        <button class="day-btn" id="btn-Pazar" onclick="loadDay('Pazar')">Paz</button>
     </div>
 
     <div class="fuel-container">
@@ -179,6 +156,7 @@
 
 <div class="congrats-message" id="congrats" onclick="resetToHome()">
     <span id="congrats-text">GÖREV TAMAMLANDI!</span>
+    <button class="jump-btn" id="galactic-jump-btn" style="display: none;" onclick="galacticJump(event)">🚀 GALAKTİK SIÇRAMA YAP (Sıfırla)</button>
 </div>
 
 <script>
@@ -194,80 +172,151 @@
         osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration);
     }
     function playStarSound() { initAudio(); playBeep(880, 'sine', 0.15, 0.1); setTimeout(() => playBeep(1200, 'sine', 0.3, 0.1), 100); }
-    function playWarpSound() { initAudio(); playBeep(200, 'sawtooth', 3.0, 0.1); setTimeout(() => playBeep(100, 'square', 4.0, 0.2), 200); }
+    function playWarpSound() { initAudio(); playBeep(200, 'sawtooth', 4.0, 0.1); setTimeout(() => playBeep(100, 'square', 4.0, 0.2), 200); }
     function playUfoSound() { initAudio(); playBeep(500, 'sine', 1.0, 0.1); setTimeout(() => playBeep(700, 'sine', 1.0, 0.1), 150); }
+    function playLootSound() { initAudio(); playBeep(1000, 'sine', 0.1, 0.2); setTimeout(() => playBeep(1500, 'sine', 0.4, 0.2), 150); }
 
-    // --- EASTER EGG: RASTGELE UZAY NESNELERİ ---
-    const spaceObjects = ["🛸", "🚀", "☄️", "🛰️", "👨‍🚀"];
-    let clickCount = 0; let clickTimer;
-    document.addEventListener('click', (e) => {
-        if(e.target.closest('button') || e.target.closest('.single-star') || e.target.closest('input') || e.target.closest('.editable-task') || e.target.closest('#congrats')) return;
-        clickCount++; clearTimeout(clickTimer);
-        if(clickCount === 3) { triggerDynamicObject(); clickCount = 0; } 
-        else { clickTimer = setTimeout(() => { clickCount = 0; }, 1500); }
-    });
+    // --- HD CANVAS 3D WARP MOTORU ---
+    const canvas = document.getElementById('starCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h; let stars3D = []; let warpSpeed = 0.5; // Normal akış hızı
 
-    function triggerDynamicObject() {
-        playUfoSound();
-        const obj = document.getElementById('easter-ufo');
-        const emoji = document.getElementById('ufo-emoji');
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize); resize();
+
+    for(let i=0; i<600; i++) { stars3D.push({ x: Math.random()*2000-1000, y: Math.random()*2000-1000, z: Math.random()*2000 }); }
+
+    function drawCanvas() {
+        ctx.fillStyle = '#03060d'; ctx.fillRect(0, 0, w, h);
+        let cx = w/2; let cy = h/2;
+
+        stars3D.forEach(s => {
+            let pz = s.z;
+            s.z -= warpSpeed;
+            if (s.z <= 0) { s.z = 2000; s.x = Math.random()*2000-1000; s.y = Math.random()*2000-1000; pz = s.z; }
+
+            let x = (s.x / s.z) * 100 + cx; let y = (s.y / s.z) * 100 + cy;
+            let px = (s.x / pz) * 100 + cx; let py = (s.y / pz) * 100 + cy;
+
+            // Çizgi çizimi (Işık hızında çizgiler uzar)
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(x, y);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - s.z/2000})`;
+            ctx.lineWidth = warpSpeed > 2 ? 2 : 1; // Hızlanınca çizgiler kalınlaşır
+            ctx.stroke();
+        });
+        requestAnimationFrame(drawCanvas);
+    }
+    drawCanvas();
+
+    // --- ÇOKLU DİNAMİK NESNELER ---
+    const spaceObjects = ["🛸", "🚀", "☄️", "🛰️"];
+    function spawnSpaceObject(playSound = false) {
+        if(playSound) playUfoSound(); 
+        const obj = document.createElement('div'); obj.className = 'space-object';
+        const emoji = document.createElement('div'); emoji.className = 'ufo-emoji';
         emoji.innerText = spaceObjects[Math.floor(Math.random() * spaceObjects.length)];
+        obj.appendChild(emoji); document.body.appendChild(obj);
         
-        const w = window.innerWidth; const h = window.innerHeight;
         const startFromLeft = Math.random() > 0.5;
         const startX = startFromLeft ? -150 : w + 150; const endX = startFromLeft ? w + 150 : -150;
         const startY = Math.random() * h; const endY = Math.random() * h;
         let angle = Math.atan2(endY - startY, endX - startX) * (180 / Math.PI);
         let flip = Math.abs(angle) > 90 ? "scaleY(-1)" : "";
         
-        obj.style.transition = 'none'; obj.style.left = startX + 'px'; obj.style.top = startY + 'px'; obj.style.transform = `rotate(${angle}deg) ${flip}`;
-        void obj.offsetWidth;
+        obj.style.left = startX + 'px'; obj.style.top = startY + 'px'; obj.style.transform = `rotate(${angle}deg) ${flip}`;
+        void obj.offsetWidth; 
         obj.style.transition = 'left 3.5s linear, top 3.5s linear'; obj.style.left = endX + 'px'; obj.style.top = endY + 'px';
+        setTimeout(() => obj.remove(), 4000);
     }
 
-    // --- HAFIZA (LOCAL STORAGE) VE RÜTBE SİSTEMİ ---
+    document.addEventListener('click', (e) => {
+        if(e.target.closest('button') || e.target.closest('.single-star') || e.target.closest('input') || e.target.closest('.editable-task') || e.target.closest('.congrats-message') || e.target.closest('#lootbox-screen')) return;
+        spawnSpaceObject(true); 
+    });
+
+    function autoSpawnLoop() {
+        setTimeout(() => { if(warpSpeed < 2) spawnSpaceObject(false); autoSpawnLoop(); }, Math.random() * 2000 + 4000);
+    }
+    autoSpawnLoop();
+
+
+    // --- HAFIZA, RÜTBE VE KİLİTLİ AVATAR SİSTEMİ ---
     let appData = {
-        captainName: "",
-        xp: 0,
+        captainName: "", xp: 0, currentAvatarIdx: 0,
         tasks: {
-            "Pazartesi": ["Ödev", "Kitap Okuma", "İngilizce"],
-            "Salı": ["Ödev", "Kitap Okuma", "İngilizce"],
-            "Çarşamba": ["Ödev", "Kitap Okuma", "İngilizce"],
-            "Perşembe": ["Ödev", "Kitap Okuma", "İngilizce"],
-            "Cuma": ["Ödev", "Kitap Okuma", "İngilizce"],
-            "Cumartesi": ["Ödev", "Kitap Okuma", "İngilizce"],
-            "Pazar": ["Ödev", "Kitap Okuma", "İngilizce"]
+            "Pazartesi": ["Ödev", "Kitap Okuma", "İngilizce"], "Salı": ["Ödev", "Kitap Okuma", "İngilizce"],
+            "Çarşamba": ["Ödev", "Kitap Okuma", "İngilizce"], "Perşembe": ["Ödev", "Eskrim", "İngilizce"],
+            "Cuma": ["Ödev", "Kitap Okuma", "Sinema Günü"], "Cumartesi": ["Eskrim", "Kitap Okuma", "İngilizce"],
+            "Pazar": ["Serbest Zaman", "Kitap Okuma", "İngilizce"]
         },
         completed: {
-            "Pazartesi": [false, false, false], "Salı": [false, false, false], "Çarşamba": [false, false, false],
-            "Perşembe": [false, false, false], "Cuma": [false, false, false], "Cumartesi": [false, false, false], "Pazar": [false, false, false]
+            "Pazartesi": [false,false,false], "Salı": [false,false,false], "Çarşamba": [false,false,false],
+            "Perşembe": [false,false,false], "Cuma": [false,false,false], "Cumartesi": [false,false,false], "Pazar": [false,false,false]
         }
     };
 
-    const ranks = [
-        { min: 0, title: "🥉 Çaylak Yolcu" },
-        { min: 5, title: "🥈 Uzay Kaşifi" },
-        { min: 12, title: "🥇 Yıldız Savaşçısı" },
-        { min: 21, title: "🎖️ Galaksi Komutanı" } 
+    const ranks = [ { min: 0, title: "🥉 Çaylak Yolcu" }, { min: 5, title: "🥈 Uzay Kaşifi" }, { min: 12, title: "🥇 Yıldız Savaşçısı" }, { min: 21, title: "🎖️ Galaksi Komutanı" } ];
+    
+    // Avatar kilit sistemi
+    const unlockableAvatars = [
+        { icon: "👨‍🚀", reqXP: 0 }, { icon: "👩‍🚀", reqXP: 0 },
+        { icon: "👽", reqXP: 5 }, { icon: "🤖", reqXP: 12 }, { icon: "👾", reqXP: 21 }
     ];
+
+    function getUnlockedAvatars() { return unlockableAvatars.filter(a => appData.xp >= a.reqXP); }
 
     function loadData() {
         let saved = localStorage.getItem('galaktikData');
-        if(saved) { appData = JSON.parse(saved); }
+        if(saved) { 
+            let parsed = JSON.parse(saved);
+            appData.captainName = parsed.captainName || ""; appData.xp = parsed.xp || 0;
+            appData.currentAvatarIdx = parsed.currentAvatarIdx || 0;
+            appData.tasks = parsed.tasks || appData.tasks; appData.completed = parsed.completed || appData.completed;
+        }
         document.getElementById('captain-name').value = appData.captainName;
-        updateRank();
+        
+        let unlocked = getUnlockedAvatars();
+        if(appData.currentAvatarIdx >= unlocked.length) appData.currentAvatarIdx = 0;
+        document.getElementById('avatar').innerText = unlocked[appData.currentAvatarIdx].icon;
+        
+        updateRankAndStreak();
     }
 
     function saveData() {
         appData.captainName = document.getElementById('captain-name').value;
         localStorage.setItem('galaktikData', JSON.stringify(appData));
-        updateRank();
+        updateRankAndStreak();
     }
 
-    function updateRank() {
+    function updateRankAndStreak() {
+        // Rütbe
         let currentRank = ranks[0].title;
         for(let r of ranks) { if(appData.xp >= r.min) currentRank = r.title; }
         document.getElementById('rank-badge').innerText = `${currentRank} (${appData.xp} XP)`;
+
+        // Seri (Streak) Hesaplama: Kaç tam gün bitti?
+        let streak = 0;
+        for(let day in appData.completed) { if(appData.completed[day].filter(x=>x).length === 3) streak++; }
+        
+        const streakEl = document.getElementById('streak-badge');
+        if(streak > 0) {
+            streakEl.innerText = `🔥 ${streak} Günlük Seri!`;
+            streakEl.style.display = "block";
+        } else { streakEl.style.display = "none"; }
+
+        // Avatar İpucu
+        let nextAvatar = unlockableAvatars.find(a => a.reqXP > appData.xp);
+        document.getElementById('avatar-hint').innerText = nextAvatar ? `Yeni kilit: ${nextAvatar.reqXP} XP` : "Tüm kilitler açık!";
+    }
+
+    function changeAvatar(e) { 
+        e.stopPropagation(); 
+        let unlocked = getUnlockedAvatars();
+        appData.currentAvatarIdx = (appData.currentAvatarIdx + 1) % unlocked.length;
+        document.getElementById('avatar').innerText = unlocked[appData.currentAvatarIdx].icon;
+        saveData();
     }
 
     let currentDay = "Pazartesi";
@@ -277,48 +326,31 @@
         document.querySelectorAll('.day-btn').forEach(btn => btn.classList.remove('active-day'));
         document.getElementById('btn-' + dayName).classList.add('active-day');
 
-        const tbody = document.getElementById('task-list');
-        tbody.innerHTML = '';
+        const tbody = document.getElementById('task-list'); tbody.innerHTML = '';
         
-        let dayTasks = appData.tasks[dayName];
-        let dayCompleted = appData.completed[dayName];
-
-        dayTasks.forEach((taskName, index) => {
-            let isDone = dayCompleted[index];
+        appData.tasks[dayName].forEach((taskName, index) => {
+            let isDone = appData.completed[dayName][index];
             let starClass = isDone ? "single-star star-lit" : "single-star";
-            let starChar = isDone ? "★" : "★";
-            let alienStr = isDone ? "👽⚡" : "👽💤";
-            let textStr = isDone ? "Tamamlandı" : "Bekleniyor...";
-            let textClass = isDone ? "task-text text-revealed" : "task-text";
-            let alienClass = isDone ? "alien-icon alien-awake" : "alien-icon";
+            let alienStr = isDone ? "👽⚡" : "👽💤"; let textStr = isDone ? "Tamamlandı" : "Bekleniyor...";
+            let textClass = isDone ? "task-text text-revealed" : "task-text"; let alienClass = isDone ? "alien-icon alien-awake" : "alien-icon";
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td><div class="editable-task" contenteditable="true" onblur="updateTaskName('${dayName}', ${index}, this)">${taskName}</div></td>
-                <td>
-                    <div class="log-cell">
-                        <span class="${alienClass}">${alienStr}</span>
-                        <span class="${textClass}">${textStr}</span>
-                    </div>
-                </td>
-                <td class="center-text"><span class="${starClass}" onclick="completeTask('${dayName}', ${index}, this)">${starChar}</span></td>
+                <td><div class="log-cell"><span class="${alienClass}">${alienStr}</span><span class="${textClass}">${textStr}</span></div></td>
+                <td class="center-text"><span class="${starClass}" onclick="completeTask('${dayName}', ${index}, this)">★</span></td>
             `;
             tbody.appendChild(tr);
         });
-        
         updateFuelBarUI();
     }
 
-    function updateTaskName(dayName, index, element) {
-        appData.tasks[dayName][index] = element.innerText.trim() || "Görev";
-        saveData();
-    }
+    function updateTaskName(dayName, index, element) { appData.tasks[dayName][index] = element.innerText.trim() || "Görev"; saveData(); }
 
     function updateFuelBarUI() {
         let doneCount = appData.completed[currentDay].filter(x => x).length;
         let percentage = (doneCount / 3) * 100;
-        const fuelBar = document.getElementById('fuelBar');
-        fuelBar.style.width = percentage + "%";
+        const fuelBar = document.getElementById('fuelBar'); fuelBar.style.width = percentage + "%";
         
         if(percentage === 0) {
             document.getElementById('fuelText').innerText = "GÖREVE HAZIRLAN";
@@ -332,92 +364,114 @@
         }
     }
 
-    // --- GÖREV TAMAMLAMA VE GERİ ALMA (TOGGLE) ---
     function completeTask(dayName, index, clickedStar) {
         let isDone = appData.completed[dayName][index];
-        let row = clickedStar.closest('tr');
-        let alien = row.querySelector('.alien-icon');
-        let textSpan = row.querySelector('.task-text');
+        let row = clickedStar.closest('tr'); let alien = row.querySelector('.alien-icon'); let textSpan = row.querySelector('.task-text');
 
         if (isDone) {
-            // Görevi Geri Al
-            appData.completed[dayName][index] = false;
-            appData.xp -= 1;
-            
+            appData.completed[dayName][index] = false; appData.xp = Math.max(0, appData.xp - 1);
             clickedStar.classList.remove('star-lit');
-            alien.innerText = '👽💤'; 
-            alien.classList.remove('alien-awake');
-            textSpan.innerText = 'Bekleniyor...'; 
-            textSpan.classList.remove('text-revealed');
+            alien.innerText = '👽💤'; alien.classList.remove('alien-awake'); textSpan.innerText = 'Bekleniyor...'; textSpan.classList.remove('text-revealed');
         } else {
-            // Görevi Tamamla
-            playStarSound(); 
-            appData.completed[dayName][index] = true;
-            appData.xp += 1; 
-            
+            playStarSound(); appData.completed[dayName][index] = true; appData.xp += 1; 
             clickedStar.classList.add('star-lit'); 
-            alien.innerText = '👽⚡'; 
-            alien.classList.add('alien-awake');
-            textSpan.innerText = 'Tamamlandı'; 
-            textSpan.classList.add('text-revealed');
+            alien.innerText = '👽⚡'; alien.classList.add('alien-awake'); textSpan.innerText = 'Tamamlandı'; textSpan.classList.add('text-revealed');
         }
 
-        saveData();
-        updateFuelBarUI();
+        saveData(); updateFuelBarUI();
 
-        // Eğer 3 görev de tamamlandıysa Işık Hızına geç
-        if (appData.completed[dayName].filter(x => x).length === 3) {
-            setTimeout(triggerWarpSpeed, 800); 
+        if (appData.completed[dayName].filter(x => x).length === 3) { 
+            // Pazar günü özel sandık (Lootbox)
+            if(dayName === "Pazar") { setTimeout(triggerLootbox, 800); } 
+            else { setTimeout(triggerWarpSpeed, 800); }
         }
     }
 
-    // --- ASTEROİT YAĞMURU VE IŞIK HIZI (WARP) ---
+    // --- LOOTBOX (KARA KUTU) ---
+    function triggerLootbox() { document.getElementById('lootbox-screen').classList.add('lootbox-active'); }
+    function openLoot() {
+        playLootSound();
+        document.querySelector('.chest-text').innerHTML = "+5 BONUS XP KAZANDIN!<br>Sandık Patlıyor...";
+        appData.xp += 5; saveData();
+        setTimeout(() => {
+            document.getElementById('lootbox-screen').classList.remove('lootbox-active');
+            triggerWarpSpeed();
+        }, 1500);
+    }
+
+    // --- IŞIK HIZI (HD WARP) ---
     let meteorInterval;
     function triggerWarpSpeed() {
         playWarpSound();
-        document.getElementById('bg-stars').classList.add('warp-speed');
+        warpSpeed = 40; // Canvas yıldızlarını çılgın hıza al
         document.getElementById('main-container').classList.add('hide-container');
         
-        const field = document.getElementById('asteroid-field');
-        field.innerHTML = ''; 
-        
+        const field = document.getElementById('asteroid-field'); field.innerHTML = ''; 
         meteorInterval = setInterval(() => {
-            let m = document.createElement('div');
-            m.className = 'meteor';
-            m.innerText = '☄️';
-            m.style.top = (Math.random() * 100) + 'vh';
-            m.style.animationDuration = (Math.random() * 0.4 + 0.2) + 's'; // Asteroitler artık daha hızlı
-            field.appendChild(m);
-            setTimeout(() => m.remove(), 1000);
-        }, 80); // Daha yoğun asteroit
+            let m = document.createElement('div'); m.className = 'meteor'; m.innerText = '☄️';
+            m.style.top = (Math.random() * 100) + 'vh'; m.style.animationDuration = (Math.random() * 0.4 + 0.2) + 's'; 
+            field.appendChild(m); setTimeout(() => m.remove(), 1000);
+        }, 60); 
 
         let capName = appData.captainName.trim().toUpperCase() || "KAPTAN";
-        document.getElementById('congrats-text').innerHTML = `GÖREV TAMAMLANDI<br>${capName}! 🌌`;
+        
+        // Haftalık tam kontrol
+        let totalCompleted = 0;
+        for(let day in appData.completed) totalCompleted += appData.completed[day].filter(x=>x).length;
+        
+        let congratsText = `GÖREV TAMAMLANDI<br>${capName}! 🌌`;
+        let btnDisplay = "none";
+
+        if(totalCompleted === 21) {
+            congratsText = `HAFTALIK SERİ TAMAMLANDI<br>MÜKEMMELSİN ${capName}! 👑`;
+            btnDisplay = "block"; // Sıfırlama butonu
+        }
+
+        document.getElementById('congrats-text').innerHTML = congratsText;
+        document.getElementById('galactic-jump-btn').style.display = btnDisplay;
         
         setTimeout(() => { document.getElementById('congrats').classList.add('congrats-active'); }, 2000);
     }
 
-    // --- ANA EKRANA DÖNÜŞ ---
     function resetToHome() {
-        clearInterval(meteorInterval);
-        document.getElementById('asteroid-field').innerHTML = '';
-        document.getElementById('bg-stars').classList.remove('warp-speed');
-        document.getElementById('congrats').classList.remove('congrats-active');
-        
-        setTimeout(() => {
-            document.getElementById('main-container').classList.remove('hide-container');
-            loadDay(currentDay); 
-        }, 500);
+        // Eğer Galaktik Sıçrama butonu varsa ve ekrana tıklanırsa, normal dönüşü engelle. Butona basılmasını bekle.
+        if(document.getElementById('galactic-jump-btn').style.display === "block") return;
+        executeReturn();
     }
 
-    // Avatar Değiştirme
-    const avatars = ["👨‍🚀", "👩‍🚀", "👽", "🤖", "👾"];
-    let avatarIdx = 0;
-    function changeAvatar(e) { e.stopPropagation(); avatarIdx = (avatarIdx + 1) % avatars.length; document.getElementById('avatar').innerText = avatars[avatarIdx]; }
+    function executeReturn() {
+        clearInterval(meteorInterval);
+        warpSpeed = 0.5; // Hızı normale döndür
+        document.getElementById('asteroid-field').innerHTML = '';
+        document.getElementById('congrats').classList.remove('congrats-active');
+        setTimeout(() => { document.getElementById('main-container').classList.remove('hide-container'); loadDay(currentDay); }, 500);
+    }
+
+    // --- GALAKTİK SIÇRAMA (HAFTALIK SIFIRLAMA) ---
+    function galacticJump(e) {
+        e.stopPropagation(); // Arka plana tıklamayı engeller
+        playWarpSound();
+        
+        // Bembeyaz Flaş Ekranı
+        const flash = document.getElementById('flash-overlay');
+        flash.style.opacity = "1";
+        
+        // Verileri sıfırla (XP ve İsim kalır)
+        setTimeout(() => {
+            for(let day in appData.completed) { appData.completed[day] = [false, false, false]; }
+            saveData();
+            document.getElementById('congrats').classList.remove('congrats-active');
+            clearInterval(meteorInterval); warpSpeed = 0.5; document.getElementById('asteroid-field').innerHTML = '';
+            document.getElementById('main-container').classList.remove('hide-container');
+            loadDay('Pazartesi');
+        }, 1000);
+
+        // Flaş Geri Çekilsin
+        setTimeout(() => { flash.style.opacity = "0"; }, 1500);
+    }
 
     window.onload = () => { 
-        loadData();
-        loadDay('Pazartesi'); 
+        loadData(); loadDay('Pazartesi'); 
         document.body.addEventListener('touchstart', initAudio, { once: true });
         document.body.addEventListener('click', initAudio, { once: true });
     };
