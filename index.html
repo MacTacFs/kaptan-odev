@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Galaktik Macera Görev Listesi - Sürüm 4.0</title>
+<title>Galaktik Macera Görev Listesi - Sürüm 4.1</title>
 <style>
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,7 +16,7 @@
     .stars-bg {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1;
         background: radial-gradient(circle at center, #0b132b 0%, #03060d 100%);
-        pointer-events: none; transition: transform 2s ease;
+        pointer-events: none;
     }
     .stars-layer {
         position: absolute; width: 200vw; height: 200vh; top: -50vh; left: -50vw;
@@ -29,9 +29,16 @@
     }
     @keyframes slowSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    /* WARP HIZI (IŞIK HIZI EFEKTİ) */
-    .warp-speed .stars-layer { animation: warpSpin 1s linear infinite !important; filter: blur(3px); opacity: 1; }
-    @keyframes warpSpin { 0% { transform: rotate(0deg) scale(1); } 100% { transform: rotate(5deg) scale(2); } }
+    /* STAR WARS HYPERSPACE (IŞINLANMA) EFEKTİ */
+    .warp-speed .stars-layer { 
+        animation: hyperDrive 1.2s infinite ease-in !important; 
+        filter: blur(1px); 
+    }
+    @keyframes hyperDrive { 
+        0% { transform: scale(1); opacity: 0; } 
+        50% { opacity: 1; }
+        100% { transform: scale(15); opacity: 0; } 
+    }
 
     /* ASTEROİT KONTEYNERİ */
     #asteroid-field { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5; pointer-events: none; overflow: hidden; }
@@ -80,7 +87,7 @@
     
     .fuel-container { width: 100%; height: 12px; background-color: rgba(0,0,0,0.5); border-radius: 10px; margin-bottom: 25px; border: 1px solid rgba(91, 192, 190, 0.3); overflow: hidden; position: relative; }
     .fuel-bar { height: 100%; width: 0%; background-color: #5bc0be; border-radius: 8px; transition: width 0.6s ease, background-color 0.5s; }
-    .fuel-text { position: absolute; width: 100%; text-align: center; top: -2px; font-size: 0.75em; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; }
+    .fuel-text { position: absolute; width: 100%; text-align: center; top: -2px; font-size: 0.75em; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; pointer-events: none;}
 
     /* TABLO VE DEĞİŞTİRİLEBİLİR GÖREVLER */
     .table-responsive { width: 100%; overflow-x: auto; padding-right: 5px; }
@@ -104,7 +111,8 @@
 
     .single-star { font-size: 3em; color: rgba(255,255,255,0.15); cursor: pointer; transition: all 0.3s; display: inline-block; user-select: none; }
     .single-star:active { transform: scale(0.8); }
-    .star-lit { color: #ffde59; text-shadow: 0 0 25px #ffde59, 0 0 45px #ffde59; transform: scale(1.1); pointer-events: none; }
+    /* pointer-events: none silindi ki geri tıklanabilsin */
+    .star-lit { color: #ffde59; text-shadow: 0 0 25px #ffde59, 0 0 45px #ffde59; transform: scale(1.1); }
 
     /* TEBRİK MESAJI (Tıklanabilir) */
     .congrats-message {
@@ -114,8 +122,6 @@
         opacity: 0; pointer-events: none; transition: opacity 1s ease-in; cursor: pointer;
     }
     .congrats-active { opacity: 1; pointer-events: auto; }
-    .sub-text { font-size: 0.4em; color: #fff; text-shadow: none; opacity: 0.8; font-weight: normal; margin-top: 15px; display: block; animation: pulse 2s infinite; }
-    @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
     /* DİNAMİK EASTER EGG NESNESİ */
     #easter-ufo { position: fixed; font-size: 4em; z-index: 9999; pointer-events: none; top: -200px; left: -200px; }
@@ -173,7 +179,6 @@
 
 <div class="congrats-message" id="congrats" onclick="resetToHome()">
     <span id="congrats-text">GÖREV TAMAMLANDI!</span>
-    <span class="sub-text">Ana Kontrol Paneline Dönmek İçin Tıkla</span>
 </div>
 
 <script>
@@ -243,7 +248,7 @@
         { min: 0, title: "🥉 Çaylak Yolcu" },
         { min: 5, title: "🥈 Uzay Kaşifi" },
         { min: 12, title: "🥇 Yıldız Savaşçısı" },
-        { min: 21, title: "🎖️ Galaksi Komutanı" } // 7 gün x 3 görev
+        { min: 21, title: "🎖️ Galaksi Komutanı" } 
     ];
 
     function loadData() {
@@ -319,7 +324,7 @@
             document.getElementById('fuelText').innerText = "GÖREVE HAZIRLAN";
             fuelBar.style.backgroundColor = "#5bc0be"; fuelBar.style.boxShadow = "0 0 15px #5bc0be";
         } else if(percentage === 100) {
-            document.getElementById('fuelText').innerText = "IŞIK HIZINA GEÇİLİYOR!";
+            document.getElementById('fuelText').innerText = "IŞIK HIZINA GEÇİLDİ!";
             fuelBar.style.backgroundColor = "#ffde59"; fuelBar.style.boxShadow = "0 0 25px #ffde59";
         } else {
             document.getElementById('fuelText').innerText = "%" + Math.round(percentage) + " YAKIT YÜKLENDİ";
@@ -327,24 +332,40 @@
         }
     }
 
+    // --- GÖREV TAMAMLAMA VE GERİ ALMA (TOGGLE) ---
     function completeTask(dayName, index, clickedStar) {
-        if (appData.completed[dayName][index]) return; // Zaten yapıldıysa çık
-
-        playStarSound(); 
-        appData.completed[dayName][index] = true;
-        appData.xp += 1; // XP Ver
-        saveData();
-
-        // UI Güncelleme
-        clickedStar.classList.add('star-lit'); 
+        let isDone = appData.completed[dayName][index];
         let row = clickedStar.closest('tr');
         let alien = row.querySelector('.alien-icon');
-        alien.innerText = '👽⚡'; alien.classList.add('alien-awake');
         let textSpan = row.querySelector('.task-text');
-        textSpan.innerText = 'Tamamlandı'; textSpan.classList.add('text-revealed');
 
+        if (isDone) {
+            // Görevi Geri Al
+            appData.completed[dayName][index] = false;
+            appData.xp -= 1;
+            
+            clickedStar.classList.remove('star-lit');
+            alien.innerText = '👽💤'; 
+            alien.classList.remove('alien-awake');
+            textSpan.innerText = 'Bekleniyor...'; 
+            textSpan.classList.remove('text-revealed');
+        } else {
+            // Görevi Tamamla
+            playStarSound(); 
+            appData.completed[dayName][index] = true;
+            appData.xp += 1; 
+            
+            clickedStar.classList.add('star-lit'); 
+            alien.innerText = '👽⚡'; 
+            alien.classList.add('alien-awake');
+            textSpan.innerText = 'Tamamlandı'; 
+            textSpan.classList.add('text-revealed');
+        }
+
+        saveData();
         updateFuelBarUI();
 
+        // Eğer 3 görev de tamamlandıysa Işık Hızına geç
         if (appData.completed[dayName].filter(x => x).length === 3) {
             setTimeout(triggerWarpSpeed, 800); 
         }
@@ -358,18 +379,17 @@
         document.getElementById('main-container').classList.add('hide-container');
         
         const field = document.getElementById('asteroid-field');
-        field.innerHTML = ''; // Temizle
+        field.innerHTML = ''; 
         
-        // Asteroit üretici
         meteorInterval = setInterval(() => {
             let m = document.createElement('div');
             m.className = 'meteor';
             m.innerText = '☄️';
             m.style.top = (Math.random() * 100) + 'vh';
-            m.style.animationDuration = (Math.random() * 0.5 + 0.3) + 's';
+            m.style.animationDuration = (Math.random() * 0.4 + 0.2) + 's'; // Asteroitler artık daha hızlı
             field.appendChild(m);
             setTimeout(() => m.remove(), 1000);
-        }, 100);
+        }, 80); // Daha yoğun asteroit
 
         let capName = appData.captainName.trim().toUpperCase() || "KAPTAN";
         document.getElementById('congrats-text').innerHTML = `GÖREV TAMAMLANDI<br>${capName}! 🌌`;
@@ -377,7 +397,7 @@
         setTimeout(() => { document.getElementById('congrats').classList.add('congrats-active'); }, 2000);
     }
 
-    // --- ANA EKRANA DÖNÜŞ (RESET GÖRÜNÜMÜ) ---
+    // --- ANA EKRANA DÖNÜŞ ---
     function resetToHome() {
         clearInterval(meteorInterval);
         document.getElementById('asteroid-field').innerHTML = '';
@@ -386,7 +406,6 @@
         
         setTimeout(() => {
             document.getElementById('main-container').classList.remove('hide-container');
-            // Yeni güne geçmek istersen buradan günü sıfırlayabilirsin ama şimdilik mevcut günü gösteriyoruz
             loadDay(currentDay); 
         }, 500);
     }
